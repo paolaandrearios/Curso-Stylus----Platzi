@@ -1,0 +1,22 @@
+mixin-max-width(width = page-max-width)
+  max-width: width
+  margin-left: auto
+  margin-right: auto
+
+
+
+
+// Referencias de como usar el mixxin.
+.container 
+  mixin-max-width(800px)
+
+.section
+  margin-bottom: 24px
+  mixin-max-width(90%)
+
+.section--landing 
+  mixin-max-width()
+
+
+mixin-padding-small(a)
+    a - padding

@@ -1,0 +1,445 @@
+/* Introducción a stylus 
+
+stylus tiene una sintaxis muy parecida a python, no requiere ;, o {} para delimitar los bloques de código, los bloques se delimitan con identación, es muy parecido a escribir python.
+
+Stylus
+Introducción al curso
+Stylus es un pre-procesador de css. Lo que quire decir que este código se copila para luego guardarlo en un archivo CSS. Por lo tanto se traduce del lenguaje de Stylus al lenguaje de CSS.
+
+Stylus trabaja con NodeJS
+
+---------------------------------
+stylus desde la terminal.
+Si tiene node instalado…
+
+npm install -g stylus
+Como compilar un archivo .styl a .css:
+
+stylus archivo.styl -o css/archivo.css
+Como compilar y comprimir el archivo:
+
+stylus archivo.styl --compress
+Como activar un watcher para no tener que compilar manualmente:
+
+stylus archivo.styl -w
+
+----------------------------------------
+
+Sintaxis
+Datos importantes:
+
+Stylus es un preprocesador que difiere un poco del resto por su sintaxis.
+Su sintaxis es anidada.
+En Stylus no es necesario usar los brackets y ; pero debemos recordar que para tener mejores prácticas deberíamos usarlas.
+
+Cómo funciona Stylus
+En stylus no requeriremos el uso de
+
+{ … }
+
+css
+
+body {
+  background: #lightyellow;
+}
+stylus
+
+body
+  background: lightyellow
+punto y coma
+css
+
+body {
+  background: #ffffe0;
+  color: #2c2c2c;
+}
+stylus
+
+body
+  background: lightyellow
+  color: #2c2c2c
+la coma
+css
+
+body,
+.light-theme {
+  background: #ffffe0;
+  color: #2c2c2c;
+}
+body .header,
+.light-theme .header {
+  font-family: monospace;
+}
+stylus
+
+body
+.light-theme
+  background: lightyellow
+  color: #2c2c2c
+  .header
+    font-family: monospace
+
+-----------------------------------
+
+Anidaciones
+
+Gracias a las anidaciones podemos añadir propiedades a través de la sintaxis de Stylus. Además, esto nos permite referenciar al padre.
+
+
+Con stylus tenemos acceso a hacer anidaciones interesantes.
+
+sub
+
+Hacemos referencia a todos los elementos que estén dentro de las etiquetas padres
+
+body, .light-theme
+  background lightyellow
+  color #2c2c2c
+
+  .primer-hijo
+    margin-bottom 24px
+child
+
+Con el uso de “>” hacemos referencia a los hijos directos del elemento padre
+
+body, .light-theme
+  background lightyellow
+  color #2c2c2c
+
+  > .primer-hijo
+    margin-bottom 24px
+reference
+
+Con el uso de “&” hacemos referencia al nombre del elemento padre
+
+.psudoe-element
+  width 300px
+
+  &:before
+    content 'hola'
+  
+  .ie-8 &
+    &:before
+      content 'ciao'
+NOTA: No anidar mas de 3 veces
+
+ejemplo de modulación
+
+.btn
+  background white
+  color black
+  border-radius 3px
+
+  &-alert
+    background red
+    color white
+
+  &-warn
+    background orange
+    color white
+
+-----------------------
+
+Intalación Stylus
+
+Instalar con npm:
+
+npm install -g stylus
+Verificar si se instalo correctamente revisando la versión:
+
+stylus -V
+Desde la terminal nos colocamos sobre la carpeta en donde tenemos nuestro archivo de Stylus, en este caso llamado **styles.styl **y ejecutamos el siguiente comando:
+
+stylus -w styles.styl -o ../css/
+Con la -w le agregamos un watcher para que detecte al hacer cambios en el archivo especificado.
+
+Con la -o le indicamos la ruta de salida (output) para nuestro archivo .css
+
+-----------------------------------------
+
+Variables
+
+Una de las mayores ventajas que tienen los preprocesadores son las variables, estas nos permiten controlar un entorno porque podemos manipular un entorno. Esto quiere decir que podemos cambiar muchas cosas a través de muchas variables.
+
+styles.styl
+
+// Variables
+font-size-normal = 18px
+font-size-small = font-size-normal - 2px
+font-size-paragraph = font-size-normal
+
+// Texts
+p
+  font-size font-size-paragraph
+
+span
+  font-size font-size-normal
+
+  &.small
+    font-size font-size-small
+    
+--------------------------------
+
+Variables
+
+Sass: $variable
+Less: @variable
+Stylus: variable =
+
+--------------------------------------
+Estructura de CSS 
+    
+Los archivos que tiene un _ no se compila.
+Para importar archivos usamos @import "_nombre_archivo"
+
+Este es un ejemplo un poco más completo de como estructurar tu proyecto, espero que les sirva.
+styles/
+|
+|– abstracts/ (or utilities/)
+| |– _variables.scss // Sass Variables
+| |– _functions.scss // Sass Functions
+| |– _mixins.scss // Sass Mixins
+|
+|– base/
+| |– _reset.scss // Reset/normalize
+| |– _typography.scss // Typography rules
+|
+|– components/ (or modules/)
+| |– _buttons.scss // Buttons
+| |– _carousel.scss // Carousel
+| |– _slider.scss // Slider
+|
+|– layout/
+| |– _navigation.scss // Navigation
+| |– _grid.scss // Grid system
+| |– _header.scss // Header
+| |– _footer.scss // Footer
+| |– _sidebar.scss // Sidebar
+| |– _forms.scss // Forms
+|
+|– pages/
+| |– _home.scss // Home specific styles
+| |– _about.scss // About specific styles
+| |– _contact.scss // Contact specific styles
+|
+|– themes/
+| |– _theme.scss // Default theme
+| |– _admin.scss // Admin theme
+|
+|– vendors/
+| |– _bootstrap.scss // Bootstrap
+| |– _jquery-ui.scss // jQuery UI
+|
+`– main.scss // Main Sass file
+
+---------------------------------------------
+
+Mixins
+
+Vamos a ver Mixins para mostrarte cómo podemos este preprocesador nos permite crecer las clases. Los mixins son declarados a través de nombres. Es importante que siempre añadamos el prefijo Mixin maxwidth.
+
+Un mixin nos permite reutilizar valores dentro del mismo CSS
+Se declara facilmente con su nombre, y como buena práctica usamos minix- antes del nombre que queremos darle
+
+mixin-max-width():
+	max-width width
+	margin-left auto
+	margin-right auto
+Y se aplica de la siguiente forma:
+
+.container
+  mixin-max-width()
+
+----------------------------------------------------
+Mixins Paramétricos
+
+Declaramos una variable en nuestra sección de variables de proyecto
+
+page-max-width= 1024px
+
+Luego agregamos esa variable como valor por defecto del mixins
+El mixin debe estar declarado en nuestro archivo de mixins
+
+mixin-max-width(width=page-max-width)
+  max-width:width
+  margin-left:auto
+  margin-right:auto
+
+Aplicando el mixin con valor por defecto
+
+.container
+  mixin-max-width()
+
+Aplicando el mixin con valor custom
+
+.section
+  mixin-max-width(90%)
+
+
+-------------------------------------------------
+
+Funciones internas
+
+Mixins: Todas las declaraciones CSS que contenga, se aplicarán donde el mixin sea implementado.
+
+Funciones: Solo lo que retorne la función, es lo que se aplicará donde sea implementado.
+
+https://stylus-lang.com/docs/functions.html
+
+
+Return Values
+Let’s try a trivial example: creating a function that adds two numbers.
+
+add(a, b)
+  a + b
+We can then use this function in conditions, in property values, etc.
+
+ body 
+   padding add(10px, 5)
+Rendering:
+
+ body {
+   padding: 15px;
+ }
+
+----------------------------------------------------------------
+
+Condicionales
+
+Stylus cuenta con condicionales if que vienen muy útiles a la hora de asegurarnos que algo tiene un valor y que se ejecute algo si eso se cumple.
+
+Los condicionales proporcionan flujo de control a un lenguaje que de otra manera es estático, proporcionando importaciones condicionales, mixins, funciones y más.
+
+compare(a, b)
+  if a > b
+    higher
+  else if a < b
+    lower
+  else
+    equal
+
+Al parecer también puedes usar Strings para evaluar las condiciones, este ejemplo también está en la documentación oficial:
+
+stringish(val)
+   if val is a 'string' or val is a 'ident'
+     yes
+   else
+     no
+
+A continuacion otro ejemplo de uso de condicionales:
+
+titulos(fuente)
+  if fuente == Fuente1
+    font-family: Fuente1
+  else 
+    font-family: Fuente2
+    text-transform: uppercase
+    font-weight: 600
+    
+-------------------------------------------------------------------
+
+Directiva for
+
+
+Esta directiva nos permite realizar ciclos para realizar un determinado número de veces.
+
+grid-size = (1..12)
+
+.grid
+	display: flex
+	flex-wrap: wrap
+	position: relative
+	flex-direction: row
+	
+[class^="grid--item"]
+	flex-shrink: 0
+	margin-right: 0
+	flex-grow: 1
+	
+for i in grid-size
+	.grid--item-{i}
+		width: (100 / i) * 1%
+Resultado:
+
+.grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  position: relative;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+[class^="grid--item"] {
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin-right: 0;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+.grid--item-1 {
+  width: 100%;
+}
+
+.grid--item-2 {
+  width: 50%;
+}
+
+.grid--item-3 {
+  width: 33.333333333333336%;
+}
+
+.grid--item-4 {
+  width: 25%;
+}
+
+.grid--item-5 {
+  width: 20%;
+}
+
+.grid--item-6 {
+  width: 16.666666666666668%;
+}
+
+.grid--item-7 {
+  width: 14.285714285714286%;
+}
+
+.grid--item-8 {
+  width: 12.5%;
+}
+
+.grid--item-9 {
+  width: 11.11111111111111%;
+}
+
+.grid--item-10 {
+  width: 10%;
+}
+
+.grid--item-11 {
+  width: 9.090909090909092%;
+}
+
+.grid--item-12 {
+  width: 8.333333333333334%;
+}
+
+-----------------------------------------------------------
+
+Para escapar variables es => {$i}
+
+
+
+https://github.com/Wakkos/PlatziMusicStylus-Styleguide/tree/Funciones
+
+
+
+
+*/
